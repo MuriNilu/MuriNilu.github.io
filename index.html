@@ -180,6 +180,26 @@
   .reveal{opacity:0;transform:translateY(26px);transition:opacity .8s cubic-bezier(.2,.7,.2,1),transform .8s cubic-bezier(.2,.7,.2,1)}
   .reveal.in{opacity:1;transform:none}
 
+  /* PROJECTS + AI PRINCIPLES */
+  .proj{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+  .pcard{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:24px;
+    transition:transform .2s ease,border-color .2s ease}
+  .pcard:hover{transform:translateY(-4px);border-color:var(--teal)}
+  .pcard .pn{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;
+    color:var(--teal);margin-bottom:10px}
+  .pcard h3{font-family:var(--serif);font-size:20px;margin:0 0 8px;font-weight:600;color:var(--ink)}
+  .pcard p{font-size:13.5px;color:var(--muted);margin:0 0 14px;line-height:1.55}
+  .pcard .tags{display:flex;flex-wrap:wrap;gap:6px}
+  .ai-head{font-family:var(--mono);font-size:12px;letter-spacing:.2em;text-transform:uppercase;
+    color:var(--teal);margin-top:54px;padding-top:34px;border-top:1px solid var(--line);
+    display:flex;align-items:center;gap:12px}
+  .ai-head::before{content:"";width:28px;height:2px;border-radius:2px;
+    background:linear-gradient(90deg,var(--teal),var(--coral))}
+  .principles{display:grid;grid-template-columns:repeat(4,1fr);gap:22px;margin-top:22px}
+  .principle .pi{font-family:var(--mono);font-size:12px;color:var(--coral)}
+  .principle h4{font-size:14.5px;margin:8px 0 6px;color:var(--ink);font-weight:600}
+  .principle p{font-size:12.5px;color:var(--muted);margin:0;line-height:1.5}
+
   /* MODAL / CONTACT FORM */
   .modal{position:fixed;inset:0;z-index:100;display:none;align-items:center;justify-content:center;padding:20px}
   .modal.open{display:flex}
@@ -214,9 +234,11 @@
     .stats{grid-template-columns:repeat(2,1fr)}
     .cards{grid-template-columns:1fr}
     .diffs{grid-template-columns:1fr}
+    .proj{grid-template-columns:1fr}
+    .principles{grid-template-columns:repeat(2,1fr)}
     .arc{grid-template-columns:1fr 1fr;row-gap:32px}.arc::before{display:none}
   }
-  @media (max-width:520px){.stats{grid-template-columns:1fr}.arc{grid-template-columns:1fr}}
+  @media (max-width:520px){.stats{grid-template-columns:1fr}.arc{grid-template-columns:1fr}.principles{grid-template-columns:1fr}}
 </style>
 
 <div class="progress" id="progress"></div>
@@ -353,6 +375,46 @@
           <p>Wirtschaftsrecht (WU Wien) und gelebte Compliance-Praxis, inklusive EU AI Act und DSGVO.
           Ich nehme Verträgen das juristische Risiko, bevor es zum Hindernis wird.</p>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap reveal">
+      <div class="sec-label">Aus eigener Hand</div>
+      <h2>Werkzeuge, die ich mit Claude Code selbst gebaut habe.</h2>
+      <p class="prose" style="margin-bottom:36px">Kein Portfolio zum Angeben — sondern der Beleg, dass
+      „ich verstehe Technik" bei mir keine Floskel ist. Eine Auswahl eigener Anwendungen:</p>
+      <div class="proj">
+        <div class="pcard">
+          <div class="pn">Sales Intelligence</div>
+          <h3>HUNTER</h3>
+          <p>Plattform für Vertriebs-Recherche: findet und qualifiziert Firmen und Ansprechpartner
+          über frei verfügbare offizielle Quellen — mit Scoring, Anreicherung und modularen Addons.</p>
+          <div class="tags"><span class="tag">Multi-Agent</span><span class="tag">Scoring</span><span class="tag">Automation</span></div>
+        </div>
+        <div class="pcard">
+          <div class="pn">HR-Tech · DE/EN</div>
+          <h3>TalentBridge</h3>
+          <p>Zweisprachiges Tool, das Kandidatenprofile und Rollen abgleicht und per Ampel-Logik
+          bewertet — aus meiner Zeit im Personalvertrieb gedacht, technisch selbst umgesetzt.</p>
+          <div class="tags"><span class="tag">LLM-Matching</span><span class="tag">DE/EN</span><span class="tag">Demo-Modus</span></div>
+        </div>
+        <div class="pcard">
+          <div class="pn">Compliance</div>
+          <h3>WächterScan</h3>
+          <p>Sanktions- und PEP-Screening für den Mittelstand: prüft Geschäftspartner gegen offizielle
+          Listen und liefert ein nachvollziehbares, quellenbelegtes Urteil. Verbindet Recht mit KI.</p>
+          <div class="tags"><span class="tag">Sanktionslisten</span><span class="tag">EU-Recht</span><span class="tag">RAG</span></div>
+        </div>
+      </div>
+
+      <div class="ai-head">So arbeite ich mit AI</div>
+      <div class="principles">
+        <div class="principle"><div class="pi">01</div><h4>Deterministik zuerst</h4><p>Skripte sammeln und filtern, die KI übernimmt nur die Synthese. Das spart Kosten und hält Ergebnisse überprüfbar.</p></div>
+        <div class="principle"><div class="pi">02</div><h4>Quellenbelegt statt geraten</h4><p>Jede Aussage braucht eine Herkunft. Anti-Halluzination über Provenienz — nicht über Bauchgefühl.</p></div>
+        <div class="principle"><div class="pi">03</div><h4>Kostenbewusst orchestriert</h4><p>Der günstigste Weg, der die Qualität hält: lokale und freie Werkzeuge zuerst, teure Modelle nur, wo sie Wert schaffen.</p></div>
+        <div class="principle"><div class="pi">04</div><h4>Agenten für Routine, Mensch für Urteil</h4><p>Wiederkehrende Arbeit übernehmen Agenten rund um die Uhr. Die Entscheidungen bleiben bei mir.</p></div>
       </div>
     </div>
   </section>
