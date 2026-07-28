@@ -247,7 +247,7 @@
         <h1 data-i18n="hero_h1">Ich verkaufe nicht. <span class="grad">Ich schaffe Werte.</span></h1>
         <p class="lead" data-i18n="hero_bridge">Seit über zehn Jahren im Enterprise-Vertrieb – mit echtem Interesse an der Technik hinter dem, was ich verkaufe. <b>Verstehen kommt bei mir vor verkaufen.</b></p>
         <div class="cta">
-          <a class="btn primary" href="cv.html" target="_blank" rel="noopener" data-i18n="btn_cv">Lebenslauf ansehen →</a>
+          <a class="btn primary" id="cvBtn" href="cv.html" data-cv-de="cv.html" data-cv-en="cv-en.html" target="_blank" rel="noopener" data-i18n="btn_cv">Lebenslauf ansehen →</a>
           <button class="btn ghost js-contact" type="button" data-i18n="btn_talk">Gespräch anfragen</button>
         </div>
       </div>
@@ -510,6 +510,7 @@
     document.documentElement.lang=LANG;
     try{localStorage.setItem('mt_lang',LANG);}catch(e){}
     document.querySelectorAll('[data-i18n]').forEach(el=>{const v=dict[el.dataset.i18n];if(v&&v[LANG]!=null)el.innerHTML=v[LANG];});
+    const cv=document.getElementById('cvBtn');if(cv){const u=cv.getAttribute('data-cv-'+LANG);if(u)cv.setAttribute('href',u);}
     document.querySelectorAll('.lang').forEach(b=>b.classList.toggle('active',b.dataset.lang===LANG));
   }
   let init='de';
