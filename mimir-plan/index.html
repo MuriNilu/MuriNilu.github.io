@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mimir — 30-Tage-Aktionsplan</title>
+<style>
+  :root{
+    --grund:#F5F4F0; --grund-2:#EAE9E4; --karte:#FFFFFF;
+    --tinte:#1A1A2E; --tinte-2:#4A4A5A; --tinte-3:#7A7A8A;
+    --linie:#D4D3CD; --linie-stark:#B8B7B1;
+    --akzent:#5D3F87; --akzent-hell:#7B57AC;
+    --cra:#E07050; --cra-hell:#F0A090;
+    --bs:#2E7D6F; --bs-hell:#60B8A8;
+    --mono:"Cascadia Mono","Consolas","SF Mono","Menlo",monospace;
+    --sans:"Segoe UI","Roboto","Helvetica Neue",system-ui,sans-serif;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{
+      --grund:#12121A; --grund-2:#1A1A24; --karte:#1E1E2A;
+      --tinte:#E8E6F0; --tinte-2:#A8A6B8; --tinte-3:#78788A;
+      --linie:#2A2A36; --linie-stark:#3A3A48;
+      --akzent:#A98BD4; --akzent-hell:#C0A6E5;
+      --cra:#E88070; --cra-hell:#A05040;
+      --bs:#40B0A0; --bs-hell:#207060;
+    }
+  }
+  :root[data-theme="dark"]{
+    --grund:#12121A; --grund-2:#1A1A24; --karte:#1E1E2A;
+    --tinte:#E8E6F0; --tinte-2:#A8A6B8; --tinte-3:#78788A;
+    --linie:#2A2A36; --linie-stark:#3A3A48;
+    --akzent:#A98BD4; --akzent-hell:#C0A6E5;
+    --cra:#E88070; --cra-hell:#A05040;
+    --bs:#40B0A0; --bs-hell:#207060;
+  }
+  :root[data-theme="light"]{
+    --grund:#F5F4F0; --grund-2:#EAE9E4; --karte:#FFFFFF;
+    --tinte:#1A1A2E; --tinte-2:#4A4A5A; --tinte-3:#7A7A8A;
+    --linie:#D4D3CD; --linie-stark:#B8B7B1;
+    --akzent:#5D3F87; --akzent-hell:#7B57AC;
+    --cra:#E07050; --cra-hell:#F0A090;
+    --bs:#2E7D6F; --bs-hell:#60B8A8;
+  }
+
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--grund);color:var(--tinte);font-family:var(--sans);
+    font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:1200px;margin:0 auto;padding:0 28px;}
+  h1,h2,h3,h4{margin:0;text-wrap:balance;font-weight:660;letter-spacing:-.015em;}
+  p{margin:0;}
+  .eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.16em;
+    text-transform:uppercase;color:var(--akzent);font-weight:600;}
+
+  /* HEADER */
+  header{border-bottom:1px solid var(--linie);
+    background:linear-gradient(180deg,var(--grund-2),var(--grund));}
+  .kopf{padding:52px 0 42px;display:grid;gap:18px;}
+  .kopf h1{font-size:clamp(28px,4.4vw,44px);line-height:1.12;max-width:22ch;}
+  .kopf .lead{max-width:64ch;color:var(--tinte-2);font-size:18px;}
+
+  /* COUNTDOWN */
+  .countdown-bar{display:flex;flex-wrap:wrap;gap:20px;align-items:center;
+    padding:18px 22px;background:var(--karte);border:1px solid var(--linie-stark);
+    border-left:3px solid var(--cra);border-radius:2px;}
+  .countdown-bar .zahl{font-family:var(--mono);font-variant-numeric:tabular-nums;
+    font-size:clamp(28px,4vw,38px);font-weight:700;line-height:1;}
+  .countdown-bar .txt{font-family:var(--mono);font-size:10px;letter-spacing:.13em;
+    text-transform:uppercase;color:var(--tinte-3);display:block;margin-top:3px;}
+  .countdown-bar .ziel{margin-left:auto;font-size:13.5px;color:var(--tinte-2);line-height:1.5;}
+  .countdown-bar .ziel b{color:var(--cra);display:block;font-size:15px;}
+
+  /* ZWEI SPALTEN */
+  .zwei{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:32px;}
+  @media(max-width:820px){.zwei{grid-template-columns:1fr;}}
+
+  /* KARTEN */
+  .spur-k{border-top:3px solid var(--cra);}
+  .spur-b{border-top:3px solid var(--bs);}
+  .karte{background:var(--karte);border:1px solid var(--linie);border-radius:2px;
+    overflow:hidden;}
+  .karte-kopf{padding:22px 24px 16px;border-bottom:1px solid var(--linie);}
+  .karte-kopf h2{font-size:22px;display:flex;align-items:center;gap:10px;}
+  .karte-kopf .icon{font-size:24px;}
+  .karte-kopf p{color:var(--tinte-2);font-size:14.5px;margin-top:6px;}
+
+  /* KENNZAHLEN */
+  .kenn{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--linie);
+    border-bottom:1px solid var(--linie);}
+  .kenn > div{background:var(--karte);padding:14px 18px;display:grid;gap:2px;}
+  .kenn .k{font-family:var(--mono);font-size:9.5px;letter-spacing:.11em;
+    text-transform:uppercase;color:var(--tinte-3);}
+  .kenn .v{font-family:var(--mono);font-variant-numeric:tabular-nums;
+    font-size:20px;font-weight:700;line-height:1.15;}
+
+  /* TIMELINE */
+  .timeline{padding:20px 24px 24px;}
+  .woche{display:grid;gap:10px;}
+  .woche h3{font-size:14px;font-family:var(--mono);letter-spacing:.08em;
+    text-transform:uppercase;padding-bottom:4px;border-bottom:1px solid var(--linie);}
+  .woche h3 .nr{color:var(--akzent);}
+  .aufgabe{display:grid;grid-template-columns:22px 1fr;gap:12px;align-items:start;
+    font-size:14.5px;padding:6px 0;}
+  .aufgabe .dot{width:8px;height:8px;border-radius:50%;margin-top:6px;flex-shrink:0;}
+  .dot-c{background:var(--cra);} .dot-b{background:var(--bs);}
+  .aufgabe .text{color:var(--tinte-2);}
+  .aufgabe .text b{color:var(--tinte);font-weight:600;}
+  .aufgabe .dauer{font-family:var(--mono);font-size:11px;color:var(--tinte-3);
+    margin-top:2px;}
+
+  /* RISIKO */
+  .risiko{padding:16px 24px 20px;border-top:1px solid var(--linie);background:var(--grund-2);}
+  .risiko h4{font-size:13px;color:var(--tinte-3);font-family:var(--mono);
+    letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px;}
+  .risiko ul{margin:0;padding-left:18px;display:grid;gap:4px;font-size:13.5px;color:var(--tinte-2);}
+
+  /* ZUSAMMEN */
+  .zusammen{margin-top:36px;background:var(--karte);border:1px solid var(--linie);
+    border-radius:2px;padding:28px 32px;display:grid;gap:16px;}
+  .zusammen h2{font-size:20px;}
+  .zusammen p{color:var(--tinte-2);font-size:15px;}
+  .schritt{display:grid;grid-template-columns:36px 1fr;gap:14px;align-items:start;}
+  .schritt .z{font-family:var(--mono);font-size:18px;font-weight:700;color:var(--akzent);
+    line-height:1;}
+  .schritt .s{font-size:15px;color:var(--tinte);}
+  .schritt .s .t{font-size:13px;color:var(--tinte-3);margin-top:2px;font-family:var(--mono);}
+
+  /* BUSINESS ERKLÄRUNG */
+  .business{margin-top:36px;display:grid;grid-template-columns:1fr 1fr;gap:24px;}
+  @media(max-width:820px){.business{grid-template-columns:1fr;}}
+  .biz-karte{background:var(--karte);border:1px solid var(--linie);border-radius:2px;
+    padding:28px 32px;display:grid;gap:16px;}
+  .biz-karte h2{font-size:20px;display:flex;align-items:center;gap:10px;}
+  .biz-karte .was{font-size:15px;color:var(--tinte);line-height:1.7;}
+  .biz-karte .was b{color:var(--akzent);}
+  .biz-karte .für{font-size:14px;color:var(--tinte-2);background:var(--grund-2);
+    padding:12px 16px;border-radius:2px;border-left:2px solid var(--akzent);}
+  .biz-karte .für b{color:var(--tinte);}
+  .biz-karte .warum{font-size:14px;color:var(--tinte-2);}
+  .biz-karte .warum li{margin-bottom:4px;}
+
+  /* MAILVORLAGEN */
+  .mails{margin-top:36px;background:var(--karte);border:1px solid var(--linie);
+    border-radius:2px;overflow:hidden;}
+  .mails-kopf{padding:24px 32px 16px;border-bottom:1px solid var(--linie);}
+  .mails-kopf h2{font-size:20px;}
+  .mails-kopf p{color:var(--tinte-2);font-size:14.5px;margin-top:4px;}
+  .mail{border-bottom:1px solid var(--linie);}
+  .mail summary{padding:18px 32px;cursor:pointer;font-weight:600;font-size:15px;
+    list-style:none;display:flex;align-items:center;gap:12px;color:var(--tinte);}
+  .mail summary::-webkit-details-marker{display:none;}
+  .mail summary::before{content:"✉";font-size:16px;}
+  .mail summary:hover{color:var(--akzent);}
+  .mail-inhalt{padding:4px 32px 24px;display:grid;gap:14px;}
+  .mail-inhalt .kontext{font-size:13px;color:var(--tinte-3);font-style:italic;}
+  .mail-text{background:var(--grund-2);border-left:3px solid var(--akzent);
+    padding:18px 22px;border-radius:2px;font-size:14.5px;line-height:1.75;
+    white-space:pre-wrap;font-family:var(--sans);}
+  .mail-text .platzhalter{background:color-mix(in srgb,var(--akzent) 15%,transparent);
+    padding:1px 5px;border-radius:2px;font-family:var(--mono);font-size:13px;}
+  .gespräch{background:var(--grund-2);padding:18px 22px;border-radius:2px;
+    font-size:14px;line-height:1.7;}
+  .gespräch h4{font-size:13px;font-family:var(--mono);letter-spacing:.08em;
+    text-transform:uppercase;color:var(--akzent);margin-bottom:10px;}
+  .gespräch .phase{display:grid;grid-template-columns:80px 1fr;gap:10px;margin-bottom:8px;}
+  .gespräch .phase .label{font-family:var(--mono);font-size:11px;color:var(--tinte-3);
+    text-transform:uppercase;padding-top:3px;}
+  .gespräch .phase .text{color:var(--tinte-2);}
+  .gespräch .phase .text b{color:var(--tinte);}
+  .gespräch .einwand{border-left:2px solid var(--cra);padding-left:14px;margin-top:10px;}
+  .gespräch .einwand .frage{font-weight:600;color:var(--tinte);}
+  .gespräch .einwand .antwort{color:var(--tinte-2);font-size:13.5px;margin-top:2px;}
+
+  /* FOOTER */
+  footer{padding:36px 0 52px;color:var(--tinte-3);font-size:12px;font-family:var(--mono);
+    line-height:1.75;text-align:center;}
+
+  /* TOGGLE */
+  .toggle-row{display:flex;justify-content:space-between;align-items:center;padding:20px 24px;
+    border-bottom:1px solid var(--linie);}
+  .toggle-row label{font-size:14px;font-weight:600;display:flex;align-items:center;gap:10px;cursor:pointer;}
+  .toggle-row input{width:18px;height:18px;accent-color:var(--akzent);cursor:pointer;}
+  .done{text-decoration:line-through;opacity:0.5;}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap kopf">
+    <span class="eyebrow">Mimir · Gründungsfahrplan · Start: KW 33 · August 2026</span>
+    <h1>Zwei Spuren. Ein Ziel. 30 Tage bis zum ersten Kunden.</h1>
+    <p class="lead">
+      <strong>CRA-Meldeweg</strong> (37-Tage-Frist) und <strong>Brandschutz-Fristenmanagement</strong>
+      (#1 der Rangliste) werden parallel aufgesetzt. Beide nutzen deinen Sales-Hintergrund —
+      du verkaufst Sicherheit, nicht Technik. Beide sind solo startbar, nebenberuflich machbar,
+      mit unter 2.000€ Einstieg.
+    </p>
+    <div class="countdown-bar">
+      <div><span class="zahl" id="ct">–</span><span class="txt">Tage bis Frist</span></div>
+      <div><span class="zahl" id="ch">–</span><span class="txt">Std</span></div>
+      <div><span class="zahl" id="cm">–</span><span class="txt">Min</span></div>
+      <div><span class="zahl" id="cs">–</span><span class="txt">Sek</span></div>
+      <div class="ziel"><b>11. September 2026</b>EU Cyber Resilience Act Art. 14 — 24h-Meldepflicht</div>
+    </div>
+  </div>
+</header>
+
+<section>
+  <div class="wrap zwei">
+
+    <!-- ====== CRA SPUR ====== -->
+    <div class="karte spur-k">
+      <div class="karte-kopf">
+        <h2><span class="icon">🔥</span> CRA-Meldeweg</h2>
+        <p>EU-Meldepflicht ab 11.09.2026. 4 von 38 Herstellern haben keinen Meldeweg.
+           Preislücke 2.900€ vs. 8.500€+ Konkurrenz. Gate 0+1 offen.</p>
+      </div>
+      <div class="kenn">
+        <div><span class="k">Einstiegskosten</span><span class="v">~250 €</span></div>
+        <div><span class="k">Potenzial Jahr 1</span><span class="v">5–20 k€</span></div>
+        <div><span class="k">Fixpreis je Kunde</span><span class="v">2.900 €</span></div>
+        <div><span class="k">Aufwand je Kunde</span><span class="v">15–25 h</span></div>
+      </div>
+      <div class="timeline">
+        <div class="woche">
+          <h3><span class="nr">Woche 1</span> — Validierung (KW 33)</h3>
+          <div class="aufgabe">
+            <span class="dot dot-c"></span>
+            <div><div class="text"><b>Arbeitsrechtler-Call buchen</b> — 250€, 1 Stunde.
+              Klärt ob du überhaupt darfst. Priorität Nr. 1.</div>
+              <div class="dauer">Tag 1–2</div></div>
+          </div>
+          <div class="aufgabe">
+            <span class="dot dot-c"></span>
+            <div><div class="text"><b>cra_radar.py --verifiziere</b> über 20 Ostösterreich-Hersteller.
+              Nur BESTAETIGT behalten. Manuelle Gegenprobe der Top 5.</div>
+              <div class="dauer">Tag 2–3</div></div>
+          </div>
+          <div class="aufgabe">
+            <span class="dot dot-c"></span>
+            <div><div class="text"><b>Erstkontakt-Text finalisieren</b> — 3 Mails an
+              Nicht-IVM-Kunden. Melecs bewusst NICHT.</div>
+              <div class="dauer">Tag 4–5</div></div>
+          </div>
+        </div>
+
+        <div class="woche">
+          <h3><span class="nr">Woche 2</span> — Markttest (KW 34)</h3>
+          <div class="aufgabe">
+            <span class="dot dot-c"></span>
+            <div><div class="text"><b>3 Erstkontakte senden</b> — "Ihre Produkte im Feld —
+              24-Stunden-Frist ab 11. September". Antwortrate messen.</div>
+              <div class="dauer">Tag 8</div></div>
+          </div>
+          <div class="aufgabe">
+            <span class="dot dot-c"></span>
+            <div><div class="text"><b>EU-Leitfaden C(2026) 5252 lesen</b> — 80 Seiten, gratis.
+              Angebot daran anpassen (§12.4 Auflage).</div>
+              <div class="dauer">Tag 8–10</div></div>
+          </div>
+          <div class="aufgabe">
+            <span class="dot dot-c"></span>
+            <div><div class="text"><b>Angebot neu schneiden</b> — von "Dokumentation" auf
+              "Betroffenheit + installierte Basis + Bereitschaftsorganisation".</div>
+              <div class="dauer">Tag 10–12</div></div>
+          </div>
+        </div>
+
+        <div class="woche">
+          <h3><span class="nr">Woche 3</span> — Entscheidung (KW 35)</h3>
+          <div class="aufgabe">
+            <span class="dot dot-c"></span>
+            <div><div class="text"><b>Ergebnisse auswerten</b> — Kill-Schwelle 1:
+              &lt;5 inhaltliche Antworten von 20 Kontakten → Stopp.</div>
+              <div class="dauer">Tag 15</div></div>
+          </div>
+          <div class="aufgabe">
+            <span class="dot dot-c"></span>
+            <div><div class="text"><b>Bei Interesse: 3 Gespräche führen</b> — Kill-Schwelle 2:
+              &lt;3 Gespräche → Stopp. Sonst: Paket finalisieren.</div>
+              <div class="dauer">Tag 15–18</div></div>
+          </div>
+          <div class="aufgabe">
+            <span class="dot dot-c"></span>
+            <div><div class="text"><b>Runbook + Policy-Vorlagen fertigstellen</b> —
+              security.txt, CVD-Policy, 24/72h-Runbook, ENISA-Pfad.</div>
+              <div class="dauer">Tag 18–20</div></div>
+          </div>
+        </div>
+
+        <div class="woche">
+          <h3><span class="nr">Woche 4</span> — Abschluss (KW 36)</h3>
+          <div class="aufgabe">
+            <span class="dot dot-c"></span>
+            <div><div class="text"><b>Öffentlichen Aggregat-Report veröffentlichen</b> —
+              "Wie steht Österreich bei der CRA-Meldepflicht?" Inbound-Nachfrage erzeugen.</div>
+              <div class="dauer">Tag 22–24</div></div>
+          </div>
+          <div class="aufgabe">
+            <span class="dot dot-c"></span>
+            <div><div class="text"><b>Ersten Kunden onboarden</b> — wenn Nachfrage bestätigt.
+              2.900€ Fixpreis, 10 Werktage Lieferzeit.</div>
+              <div class="dauer">Tag 24–28</div></div>
+          </div>
+          <div class="aufgabe">
+            <span class="dot dot-c"></span>
+            <div><div class="text"><b>Kill-Schwellen prüfen</b> — Zahlungsbereitschaft,
+              TÜV-Signal, Gratis-Vorlagen. GO / NO-GO entscheiden.</div>
+              <div class="dauer">Tag 28–30</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="risiko">
+        <h4>⚠️ Risiken</h4>
+        <ul>
+          <li>Arbeitsrechtler sagt NEIN → Projekt tot (aber 250€ Lehrgeld)</li>
+          <li>Keine Antwort auf Erstkontakte → Signal tot, 2 Wochen gespart</li>
+          <li>TÜV/WKO bietet Gratis-Mustervorlagen → Dokumentenprodukt tot</li>
+          <li>Falschbefund im cra_radar → Glaubwürdigkeit weg (2-Instanzen-Prüfung schützt)</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- ====== BRANDSCHUTZ SPUR ====== -->
+    <div class="karte spur-b">
+      <div class="karte-kopf">
+        <h2><span class="icon">🛡️</span> Brandschutz-Fristenmanagement</h2>
+        <p>Rangliste #1 (47/60 Punkte). Externer Brandschutzbeauftragter der nicht prüft —
+           nur orchestriert. Software-Hebel, wiederkehrender Umsatz.</p>
+      </div>
+      <div class="kenn">
+        <div><span class="k">Einstiegskosten</span><span class="v">~1.500 €</span></div>
+        <div><span class="k">Potenzial Jahr 1</span><span class="v">18–36 k€</span></div>
+        <div><span class="k">Jahrespauschale je Kunde</span><span class="v">2.400–6.000 €</span></div>
+        <div><span class="k">Break-Even</span><span class="v">3–4 Kunden</span></div>
+      </div>
+      <div class="timeline">
+        <div class="woche">
+          <h3><span class="nr">Woche 1</span> — Fundament (KW 33)</h3>
+          <div class="aufgabe">
+            <span class="dot dot-b"></span>
+            <div><div class="text"><b>TRVB 117 O Ausbildung buchen</b> — 2-3 Tage,
+              ~800-1.500€. Anbieter: TÜV Austria, BVS, Brandschutzakademie.</div>
+              <div class="dauer">Tag 1–2</div></div>
+          </div>
+          <div class="aufgabe">
+            <span class="dot dot-b"></span>
+            <div><div class="text"><b>Marktrecherche starten</b> — Honorare externer
+              Brandschutzbeauftragter in AT, Anbieterliste, TRVB-Preise erheben.</div>
+              <div class="dauer">Tag 2–4</div></div>
+          </div>
+          <div class="aufgabe">
+            <span class="dot dot-b"></span>
+            <div><div class="text"><b>Software-Architektur entwerfen</b> — Anlagenkataster,
+              Fristenkalender, Prüfstellen-Zuordnung, Erinnerungssystem.</div>
+              <div class="dauer">Tag 4–5</div></div>
+          </div>
+        </div>
+
+        <div class="woche">
+          <h3><span class="nr">Woche 2</span> — Ausbildung + Software (KW 34)</h3>
+          <div class="aufgabe">
+            <span class="dot dot-b"></span>
+            <div><div class="text"><b>TRVB 117 O Ausbildung absolvieren</b> —
+              Theorie + Praxis. Zertifikat als Grundlage.</div>
+              <div class="dauer">Tag 8–10</div></div>
+          </div>
+          <div class="aufgabe">
+            <span class="dot dot-b"></span>
+            <div><div class="text"><b>Software MVP bauen</b> — Claude Code.
+              Kataster je Kunde, 7+ Anlagentypen mit Intervallen, automatische Erinnerungen.</div>
+              <div class="dauer">Tag 10–12</div></div>
+          </div>
+          <div class="aufgabe">
+            <span class="dot dot-b"></span>
+            <div><div class="text"><b>Netz an Prüffirmen aufbauen</b> — akkreditierte Institute,
+              Fachfirmen für BMA, Sprinkler, RWA, Klappen, Gaslöschung.</div>
+              <div class="dauer">Tag 12–14</div></div>
+          </div>
+        </div>
+
+        <div class="woche">
+          <h3><span class="nr">Woche 3</span> — Angebot + Pilot (KW 35)</h3>
+          <div class="aufgabe">
+            <span class="dot dot-b"></span>
+            <div><div class="text"><b>Angebotspaket schnüren</b> — Jahrespauschale,
+              Leistungsumfang, Haftung, SLA. Mustervertrag erstellen.</div>
+              <div class="dauer">Tag 15–16</div></div>
+          </div>
+          <div class="aufgabe">
+            <span class="dot dot-b"></span>
+            <div><div class="text"><b>5 Pilotkunden ansprechen</b> — Hotels, Pflegeheime,
+              Industrie aus IVM-Netzwerk. Gratis Erstberatung als Türöffner.</div>
+              <div class="dauer">Tag 16–18</div></div>
+          </div>
+          <div class="aufgabe">
+            <span class="dot dot-b"></span>
+            <div><div class="text"><b>Erste Kataster erstellen</b> — für interessierte
+              Pilotkunden. Wert demonstrieren: "So viele Fristen reißen Sie gerade."</div>
+              <div class="dauer">Tag 18–20</div></div>
+          </div>
+        </div>
+
+        <div class="woche">
+          <h3><span class="nr">Woche 4</span> — Skalierung (KW 36)</h3>
+          <div class="aufgabe">
+            <span class="dot dot-b"></span>
+            <div><div class="text"><b>2-3 Erstverträge abschließen</b> — Jahrespauschale
+              2.400-6.000€. Onboarding, Kataster befüllen, Prüftermine koordinieren.</div>
+              <div class="dauer">Tag 22–24</div></div>
+          </div>
+          <div class="aufgabe">
+            <span class="dot dot-b"></span>
+            <div><div class="text"><b>Software verfeinern</b> — Feedback der Pilotkunden
+              einbauen, Automatisierung verbessern, Reporting ausbauen.</div>
+              <div class="dauer">Tag 24–26</div></div>
+          </div>
+          <div class="aufgabe">
+            <span class="dot dot-b"></span>
+            <div><div class="text"><b>Skalierungsplan erstellen</b> — Ziel: 10 Kunden
+              in 90 Tagen. Vertriebskanäle definieren, Prozesse dokumentieren.</div>
+              <div class="dauer">Tag 26–30</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="risiko">
+        <h4>️ Risiken</h4>
+        <ul>
+          <li>TRVB 117 O Ausbildung teurer als erwartet → Einstiegskosten steigen</li>
+          <li>Haftungsrisiko bei verpasster Frist → gute Haftpflicht nötig</li>
+          <li>Brandschutz-Consultants als Konkurrenz → Differenzierung über Software</li>
+          <li>Software-Entwicklung dauert länger → MVP zuerst, Features später</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- BUSINESS ERKLÄRUNG -->
+<section>
+  <div class="wrap">
+    <div class="business">
+      <div class="biz-karte" style="border-top:3px solid var(--cra);">
+        <h2><span style="font-size:24px;"></span> CRA-Meldeweg</h2>
+        <div class="was">
+          <b>Was du verkaufst:</b> Ein fixfertiges „Meldepflicht-Paket" für Hersteller vernetzter Produkte.
+          Ab 11.09.2026 müssen sie Sicherheitslücken in ihren Produkten binnen 24h melden —
+          auch bei Geräten die seit Jahren im Feld stehen. Fast kein Mittelständler hat dafür eine Adresse.<br><br>
+          <b>Dein Paket (2.900€ Fixpreis, 10 Werktage):</b><br>
+          1. security.txt nach RFC 9116 + veröffentlichte Kontaktstelle<br>
+          2. CVD-Policy DE/EN<br>
+          3. Runbook: 24h Frühwarnung / 72h Meldung / 14-Tage-Bericht<br>
+          4. Betroffenheits-Kurzanalyse (welche Produkte unter eigener Marke?)<br>
+          5. Nachweisordner für Lieferantenfragebogen des OEM-Kunden<br><br>
+          <b>Nicht enthalten:</b> Rufbereitschaft, Konformitätsurteil, Rechtsberatung.
+        </div>
+        <div class="für">
+          <b>ICP (Ideal Customer Profile):</b> Hersteller 50-500 MA in Ostösterreich,
+          liefern Firmware/Software-Updates, haben keinen Meldeweg (2× verifiziert),
+          liefern an OEM/Konzern (Lieferantenfragebogen erzeugt Druck).
+        </div>
+        <div class="warum">
+          <b>Warum sie kaufen:</b> Nicht Angst vor Strafe (15 Mio.€ sind Obergrenze, nationales Recht fehlt).
+          Sondern: Der OEM-Kunden-Fragebogen. Wer keine Meldestelle hat, fliegt aus der Lieferkette.
+        </div>
+      </div>
+
+      <div class="biz-karte" style="border-top:3px solid var(--bs);">
+        <h2><span style="font-size:24px;">🛡️</span> Brandschutz-Fristenmanagement</h2>
+        <div class="was">
+          <b>Was du verkaufst:</b> Du bist der externe Brandschutzbeauftragte — aber du prüfst NICHTS.
+          Du sorgst dafür, dass jede Anlage rechtzeitig von der richtigen Stelle geprüft wird,
+          und lieferst den Nachweis. Du orchestrierst, prüfst nicht.<br><br>
+          <b>Dein Paket (Jahrespauschale 2.400-6.000€, je nach Anlagenvielfalt):</b><br>
+          1. Anlagenkataster: Was steht wo, welches Intervall, welche Prüfstelle<br>
+          2. Fristenkalender: Wartung BMA jährlich, Revision alle 2 Jahre, Klappen, RWA, Sprinkler<br>
+          3. Koordination der Prüffirmen (akkreditierte Institute + Fachfirmen)<br>
+          4. Dokumentation die vor Behörde und Versicherer steht<br>
+          5. Vorlauf-Erinnerungen + Eskalation wenn Prüftermin platzt<br><br>
+          <b>Nicht enthalten:</b> Eigene Prüfungen (BMA-Revision = nur akkreditiertes Institut).
+        </div>
+        <div class="für">
+          <b>ICP:</b> Betriebe mit 7+ Anlagentypen — Hotels, Pflegeheime, Einkaufszentren, Industrie.
+          Je mehr Anlagentypen, desto größer das Chaos, desto wertvoller deine Übersicht.
+        </div>
+        <div class="warum">
+          <b>Warum sie kaufen:</b> TRVB 119 O verpflichtet den Brandschutzbeauftragten,
+          ALLE periodischen Prüfungen zu veranlassen. 3 Verantwortungsebenen (Eigenkontrolle,
+          Fachfirma, akkreditierte Stelle) — niemand behält das im Kopf. Im Brandfall haftet er.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MAILVORLAGEN + GESPRÄCHSLEITFADEN -->
+<section>
+  <div class="wrap">
+    <div class="mails">
+      <div class="mails-kopf">
+        <h2>Mailvorlagen + Gesprächsleitfäden</h2>
+        <p>Kopieren, Platzhalter ersetzen, senden. Keine Anpassung nötig — die Texte sind
+          auf maximale Antwortrate optimiert, nicht auf Verkauf.</p>
+      </div>
+
+      <!-- CRA MAIL 1 -->
+      <details class="mail">
+        <summary>CRA-Erstkontakt — Email an Hersteller</summary>
+        <div class="mail-inhalt">
+          <div class="kontext">An wen: Geschäftsführer/COO bei 50-200 MA, Leiter Entwicklung bei 200-500 MA.
+            Nicht an IT — der CRA betrifft das PRODUKT, nicht die interne IT.</div>
+          <div class="mail-text">Betreff: Ihre Produkte im Feld — 24-Stunden-Frist ab 11. September
+
+Guten Tag Herr/Frau [Nachname],
+
+kurz und ohne Umweg: Ab 11. September 2026 greift Artikel 14 des EU Cyber Resilience Act.
+Der oft übersehene Teil steht in Artikel 69 Absatz 3 — die 24-Stunden-Meldepflicht gilt
+auch für alle Geräte, die Sie längst ausgeliefert haben, nicht nur für neue Produkte.
+
+Mir ist aufgefallen: Auf [firma].at finde ich derzeit keine Adresse, an die jemand eine
+Schwachstelle in Ihren Produkten melden könnte. Falls es sie doch gibt, ignorieren Sie diese
+Mail bitte — dann habe ich sie übersehen.
+
+Falls nicht: Ich habe die Fristen am Verordnungstext aufgearbeitet und für Hersteller Ihrer
+Größe einen Meldeweg zusammengestellt (Kontaktstelle, Policy, 24/72-Stunden-Runbook).
+
+Wäre ein 15-Minuten-Telefonat in dieser oder nächster Woche interessant?
+
+Beste Grüße
+Murat Tikic</div>
+        </div>
+      </details>
+
+      <!-- CRA MAIL 2 -->
+      <details class="mail">
+        <summary>CRA-Nachfassung — wenn keine Antwort nach 5 Tagen</summary>
+        <div class="mail-inhalt">
+          <div class="kontext">Nur wenn keine Antwort auf Mail 1. Kein Druck, kein Vorwurf.</div>
+          <div class="mail-text">Betreff: Re: Ihre Produkte im Feld — 24-Stunden-Frist ab 11. September
+
+Guten Tag Herr/Frau [Nachname],
+
+ich wollte kurz nachfassen — vielleicht ist meine letzte Mail untergegangen.
+
+Zusammengefasst: Ab September müssen auch Ihre Altgeräte einen Meldeweg für Sicherheitslücken
+haben. Ich biete ein 2.900€-Paket (Fixpreis, 10 Werktage) das das erledigt.
+
+Falls das Thema bereits bei Ihnen liegt: umso besser, dann ignorieren Sie diese Mail.
+
+Falls nicht: Ein kurzes Telefonat klärt ob ich helfen kann — 15 Minuten, kein Commitment.
+
+Beste Grüße
+Murat</div>
+        </div>
+      </details>
+
+      <!-- BS MAIL 1 -->
+      <details class="mail">
+        <summary>Brandschutz-Erstkontakt — Email an Hotel/Pflegeheim/Industrie</summary>
+        <div class="mail-inhalt">
+          <div class="kontext">An wen: Hoteldirektor, Pflegeheim-GF, Technischer Leiter Industrie.
+            Nicht an Facility Manager — der hat keine Entscheidungsgewalt über externe Beauftragte.</div>
+          <div class="mail-text">Betreff: Ihre Brandschutz-Fristen — wer prüft was bis wann?
+
+Guten Tag Herr/Frau [Nachname],
+
+in Ihrem Betrieb stehen vermutlich Brandmeldeanlage, Sprinkler, Rauchabzug, Brandschutzklappen,
+vielleicht Küchenlöschanlage — jede mit eigenem Prüfzyklus. BMA jährlich warten, alle 2 Jahre
+durch ein akkreditiertes Institut revidieren, dazu Klappen und RWA mit eigenen Intervallen.
+
+Die TRVB 119 O verpflichtet Ihren Brandschutzbeauftragten, ALL diese Prüfungen zu veranlassen.
+Drei Ebenen — Eigenkontrolle, Fachfirma, akkreditierte Stelle — die kaum jemand im Kopf behält.
+
+Ich biete genau das: Externer Brandschutzbeauftragter der NICHTS prüft, aber sicherstellt
+dass jede Anlage rechtzeitig von der richtigen Stelle geprüft wird — mit Nachweis für Behörde
+und Versicherer. Jahrespauschale, kein Stundenlohn.
+
+Wäre ein 20-Minuten-Gespräch interessant? Ich zeige Ihnen was Sie aktuell haben — kostenlos.
+
+Beste Grüße
+Murat Tikic</div>
+        </div>
+      </details>
+
+      <!-- BS MAIL 2 -->
+      <details class="mail">
+        <summary>Brandschutz-Nachfassung — Kataster als Türöffner</summary>
+        <div class="mail-inhalt">
+          <div class="kontext">Wenn kein Interesse am Telefonat: Das Kataster als kostenlosen Value-Add anbieten.</div>
+          <div class="mail-text">Betreff: Re: Ihre Brandschutz-Fristen
+
+Guten Tag Herr/Frau [Nachname],
+
+ich verstehe wenn das Thema gerade nicht oben auf der Liste steht.
+
+Ein Angebot: Ich erstelle Ihnen kostenlos ein Anlagenkataster — einfach als Übersicht
+was Sie haben, welches Intervall gilt, welche Prüfstelle zuständig ist. Dauert 30 Minuten,
+kostet nichts. Sie haben dann zumindest die Übersicht, auch wenn Sie mich nicht beauftragen.
+
+Interesse? Einfach Termin vorschlagen.
+
+Beste Grüße
+Murat</div>
+        </div>
+      </details>
+
+      <!-- CRA GESPRÄCH -->
+      <details class="mail">
+        <summary>CRA-Telefongespräch — Leitfaden 15 Minuten</summary>
+        <div class="mail-inhalt">
+          <div class="gespräch">
+            <h4>Phase 1: Einstieg (2 Min)</h4>
+            <div class="phase">
+              <span class="label">Du sagst:</span>
+              <span class="text">„Danke dass Sie sich Zeit nehmen. Ich rufe an wegen der
+                CRA-Meldepflicht ab September. Kurz: Haben Sie eine Adresse an die jemand
+                eine Schwachstelle in Ihren Produkten melden kann?"</span>
+            </div>
+
+            <h4>Phase 2: Diagnose (5 Min)</h4>
+            <div class="phase">
+              <span class="label">Wenn NEIN:</span>
+              <span class="text">„Das ist genau das Muster das ich bei fast allen Herstellern
+                Ihrer Größe sehe. Die Frage ist nicht OB, sondern WANN der erste Meldungsfall
+                kommt. Können Sie mir kurz sagen: Wie viele Produktlinien mit Firmware haben Sie?
+                Und liefern Sie an OEM-Kunden?"</span>
+            </div>
+            <div class="phase">
+              <span class="label">Wenn JA:</span>
+              <span class="text">„Perfekt, dann haben Sie das Thema schon gelöst. Darf ich fragen
+                wer das bei Ihnen betreut? — Falls ich das falsch gesehen habe, entschuldige ich
+                mich natürlich." (Gespräch beenden, notieren)</span>
+            </div>
+
+            <h4>Phase 3: Angebot (5 Min)</h4>
+            <div class="phase">
+              <span class="label">Du sagst:</span>
+              <span class="text">„Ich habe für Hersteller Ihrer Größe ein Fixpreis-Paket
+                zusammengestellt. 2.900€, 10 Werktage.security.txt, CVD-Policy, 24/72h-Runbook,
+                Betroffenheitsanalyse, Nachweisordner. Alles am Verordnungstext geprüft, keine
+                Beratung, keine Rechtsauskunft. Wäre das was das Sie weiterhilft?"</span>
+            </div>
+
+            <h4>Phase 4: Abschluss (3 Min)</h4>
+            <div class="phase">
+              <span class="label">Bei Interesse:</span>
+              <span class="text">„Super. Ich schicke Ihnen eine kurze Zusammenfassung per Mail
+                mit den 5 Leistungen und dem Fixpreis. Wir können nächste Woche einen Kickoff
+                machen — 10 Werktage dann ist alles fertig. Passt das?"</span>
+            </div>
+
+            <div class="einwand">
+              <div class="frage">Einwand: „Das macht doch unser TÜV / unsere IT"</div>
+              <div class="antwort">„Das wäre gut zu wissen — vielen Dank. Darf ich fragen was genau
+                der TÜV da übernimmt? — Falls es bereits abgedeckt ist, war mein Anruf unnötig
+                und ich entschuldige mich. Falls nicht: Ich helfe gern weiter." (Kill-Schwelle 4
+                dokumentieren)</div>
+            </div>
+
+            <div class="einwand">
+              <div class="frage">Einwand: „11.09.2026 ist doch noch fern"</div>
+              <div class="antwort">„Stimmt, aber der Aufwand ist 10 Werktage. Wenn alle im September
+                erst anfangen, wird es eng. Und: Der Lieferantennachweis ist oft der Grund warum
+                OEM-Kunden nachfragen — nicht die Behörde."</div>
+            </div>
+
+            <div class="einwand">
+              <div class="frage">Einwand: „Wir sind zu klein / Kleinstunternehmen"</div>
+              <div class="antwort">„Art. 64 Abs. 10 befreit Kleinstunternehmen von der
+                24-Stunden-Frist — das stimmt. Aber: Der OEM-Kunden-Fragebogen fragt trotzdem
+                danach. Und: Die CVD-Pflicht (Anhang I) gilt ab 2027 für ALLE. Jetzt aufsetzen
+                heißt später nicht nachholen."</div>
+            </div>
+          </div>
+        </div>
+      </details>
+
+      <!-- BS GESPRÄCH -->
+      <details class="mail">
+        <summary>Brandschutz-Gespräch — Leitfaden 20 Minuten</summary>
+        <div class="mail-inhalt">
+          <div class="gespräch">
+            <h4>Phase 1: Einstieg (3 Min)</h4>
+            <div class="phase">
+              <span class="label">Du sagst:</span>
+              <span class="text">„Danke für die Zeit. Ich möchte kurz verstehen: Welche
+                Brandschutzanlagen haben Sie? BMA, Sprinkler, RWA, Klappen, Gaslöschung,
+                Küchenlöschanlage? — Und wer koordiniert die Prüfungen?"</span>
+            </div>
+
+            <h4>Phase 2: Schmerz zeigen (5 Min)</h4>
+            <div class="phase">
+              <span class="label">Du sagst:</span>
+              <span class="text">„Typisches Muster: BMA muss jährlich gewartet werden, alle 2 Jahre
+                Revision durch akkreditiertes Institut. Sprinkler alle 3 Jahre. RWA jährlich.
+                Klappen halbjährlich. Küchenlöschanlage jährlich. Jeder andere Zyklen, andere
+                Prüfstellen. Wer behält das im Kopf? — Im Brandfall haftet der
+                Brandschutzbeauftragte."</span>
+            </div>
+
+            <h4>Phase 3: Kataster vorzeigen (7 Min)</h4>
+            <div class="phase">
+              <span class="label">Du sagst:</span>
+              <span class="text">„Ich zeige Ihnen was ich meine. Ich hab ein Beispiel-Kataster
+                mitgebracht — so sieht das aus wenn alles drin steht: Was, wo, welches Intervall,
+                welche Prüfstelle, wann fällig. Grün = erledigt, gelb = bald, rot = überfällig.
+                — Können Sie das bei sich auch so sehen?"</span>
+            </div>
+
+            <h4>Phase 4: Angebot (5 Min)</h4>
+            <div class="phase">
+              <span class="label">Du sagst:</span>
+              <span class="text">„Ich biete das als Jahrespauschale. Je nach Anlagenvielfalt
+                2.400-6.000€. Sie kriegen: Kataster, Fristenkalender, Erinnerungssystem,
+                Koordination der Prüffirmen, Dokumentation. Sie müssen nichts tun außer mir
+                Zugang zu den Anlagen zu geben."</span>
+            </div>
+
+            <div class="einwand">
+              <div class="frage">Einwand: „Das macht unser Facility Manager"</div>
+              <div class="antwort">„Das kann gut sein — der FM macht die Eigenkontrolle.
+                Aber wer koordiniert die akkreditierten Institute? Wer prüft ob die Revision
+                wirklich alle 2 Jahre kommt? Wer hat die Übersicht wenn der FM krank ist
+                oder wechselt?"</div>
+            </div>
+
+            <div class="einwand">
+              <div class="frage">Einwand: „Wir haben doch einen Brandschutzbeauftragten"</div>
+              <div class="antwort">„Perfekt — der BSB ist oft überlastet. Ich entlaste ihn,
+                ersetze ihn nicht. Er bleibt verantwortlich, ich liefer die Übersicht die er
+                braucht."</div>
+            </div>
+
+            <div class="einwand">
+              <div class="frage">Einwand: „Zu teuer"</div>
+              <div class="antwort">„Verstehe. Rechnen wir nach: Eine verpasste Revision kann
+                im Versicherungsfall zum Problem werden. Und die Zeit die Ihr BSB mit
+                Fristen-Tracking verbringt — was kostet die? — 2.400€ sind 200€/Monat.
+                Das ist weniger als ein Tag BSB-Zeit."</div>
+            </div>
+          </div>
+        </div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ZUSAMMENGEFASSTER PLAN -->
+<section>
+  <div class="wrap">
+    <div class="zusammen">
+      <h2>Der kombinierte 30-Tage-Fahrplan — Tag für Tag</h2>
+      <p>Beide Spuren parallel. CRA validiert den Markt in 30 Tagen. Brandschutz baut
+         das Fundament für wiederkehrenden Umsatz. Wenn CRA durchfällt, bleibt Brandschutz.</p>
+
+      <div class="schritt">
+        <span class="z">01</span>
+        <div class="s">Arbeitsrechtler-Call + TRVB-Ausbildung buchen
+          <span class="t">Tag 1–2 · Beide Spuren · 250€ + 800-1.500€</span></div>
+      </div>
+      <div class="schritt">
+        <span class="z">02</span>
+        <div class="s">cra_radar.py laufen lassen + Marktrecherche Brandschutz
+          <span class="t">Tag 2–4 · CRA: 20 Hersteller · BS: Honorare + Anbieter</span></div>
+      </div>
+      <div class="schritt">
+        <span class="z">03</span>
+        <div class="s">Erstkontakt-Text CRA + Software-Architektur BS
+          <span class="t">Tag 4–5 · CRA: 3 Mails vorbereiten · BS: Kataster-Design</span></div>
+      </div>
+      <div class="schritt">
+        <span class="z">04</span>
+        <div class="s">3 CRA-Erstkontakte senden + TRVB-Ausbildung absolvieren
+          <span class="t">Tag 8 · CRA: Mails raus · BS: 2-3 Tage Kurs</span></div>
+      </div>
+      <div class="schritt">
+        <span class="z">05</span>
+        <div class="s">EU-Leitfaden lesen + Software MVP bauen
+          <span class="t">Tag 8–12 · CRA: 80 Seiten · BS: Claude Code Kataster</span></div>
+      </div>
+      <div class="schritt">
+        <span class="z">06</span>
+        <div class="s">CRA-Ergebnisse + BS-Pilotkunden ansprechen
+          <span class="t">Tag 15–18 · CRA: Antwortrate · BS: 5 Kontakte</span></div>
+      </div>
+      <div class="schritt">
+        <span class="z">07</span>
+        <div class="s">Kill-Schwellen CRA + Erstverträge BS
+          <span class="t">Tag 22–24 · CRA: GO/NO-GO · BS: 2-3 Verträge</span></div>
+      </div>
+      <div class="schritt">
+        <span class="z">08</span>
+        <div class="s">Aggregat-Report CRA + Skalierungsplan BS
+          <span class="t">Tag 28–30 · CRA: Inbound · BS: 10 Kunden in 90 Tagen</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TÄGLICHE CHECKLISTE -->
+<section>
+  <div class="wrap">
+    <div class="karte" style="margin-top:32px;">
+      <div class="karte-kopf">
+        <h2>Tägliche Checkliste — Fortschritt tracken</h2>
+        <p>Klicke ab was erledigt ist. Der Fortschritt wird im Browser gespeichert.</p>
+      </div>
+      <div id="checklist"></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    Mimir · Gründungsfahrplan · Erstellt 2026-08-04 · Alle Angaben ohne Gewähr<br>
+    CRA-Meldeweg basiert auf VO (EU) 2024/2847 · Brandschutz auf TRVB 117 O / 119 O
+  </div>
+</footer>
+
+<script>
+(function(){
+  // Countdown
+  var ziel = new Date("2026-09-11T00:00:00+02:00").getTime();
+  function pad(x){return String(x).padStart(2,"0");}
+  function tick(){
+    var d = ziel - Date.now();
+    if(d<0) d=0;
+    var t = document.getElementById("ct"),
+        h = document.getElementById("ch"),
+        m = document.getElementById("cm"),
+        s = document.getElementById("cs");
+    if(t){
+      t.textContent = Math.floor(d/86400000);
+      h.textContent = pad(Math.floor(d/3600000)%24);
+      m.textContent = pad(Math.floor(d/60000)%60);
+      s.textContent = pad(Math.floor(d/1000)%60);
+    }
+  }
+  tick(); setInterval(tick,1000);
+
+  // Checklist
+  var items = [
+    {t:"Arbeitsrechtler-Call buchen",k:"cra",d:"Tag 1-2"},
+    {t:"cra_radar.py --verifiziere über 20 Hersteller",k:"cra",d:"Tag 2-3"},
+    {t:"Erstkontakt-Text finalisieren",k:"cra",d:"Tag 4-5"},
+    {t:"3 Erstkontakte an Nicht-IVM-Kunden senden",k:"cra",d:"Tag 8"},
+    {t:"EU-Leitfaden C(2026) 5252 lesen",k:"cra",d:"Tag 8-10"},
+    {t:"Angebot auf Betroffenheit umschneiden",k:"cra",d:"Tag 10-12"},
+    {t:"Kill-Schwelle 1 prüfen (<5 Antworten?)",k:"cra",d:"Tag 15"},
+    {t:"3 Gespräche führen (Kill-Schwelle 2)",k:"cra",d:"Tag 15-18"},
+    {t:"Runbook + Policy-Vorlagen fertig",k:"cra",d:"Tag 18-20"},
+    {t:"Aggregat-Report veröffentlichen",k:"cra",d:"Tag 22-24"},
+    {t:"Ersten Kunden onboarden",k:"cra",d:"Tag 24-28"},
+    {t:"Kill-Schwellen 3-5 prüfen → GO/NO-GO",k:"cra",d:"Tag 28-30"},
+    {t:"TRVB 117 O Ausbildung buchen",k:"bs",d:"Tag 1-2"},
+    {t:"Marktrecherche: Honorare + Anbieter AT",k:"bs",d:"Tag 2-4"},
+    {t:"Software-Architektur entwerfen",k:"bs",d:"Tag 4-5"},
+    {t:"TRVB 117 O Ausbildung absolvieren",k:"bs",d:"Tag 8-10"},
+    {t:"Software MVP bauen (Claude Code)",k:"bs",d:"Tag 10-12"},
+    {t:"Netz an Prüffirmen aufbauen",k:"bs",d:"Tag 12-14"},
+    {t:"Angebotspaket schnüren + Mustervertrag",k:"bs",d:"Tag 15-16"},
+    {t:"5 Pilotkunden ansprechen",k:"bs",d:"Tag 16-18"},
+    {t:"Erste Kataster erstellen",k:"bs",d:"Tag 18-20"},
+    {t:"2-3 Erstverträge abschließen",k:"bs",d:"Tag 22-24"},
+    {t:"Software verfeinern (Feedback)",k:"bs",d:"Tag 24-26"},
+    {t:"Skalierungsplan: 10 Kunden in 90 Tagen",k:"bs",d:"Tag 26-30"}
+  ];
+
+  var saved = {};
+  try{ saved = JSON.parse(localStorage.getItem("mimir-check")||"{}"); }catch(e){}
+
+  var container = document.getElementById("checklist");
+  var gruppen = {cra:"CRA-Meldeweg",bs:"Brandschutz-Fristenmanagement"};
+  var dotClass = {cra:"dot-c",bs:"dot-b"};
+
+  for(var g in gruppen){
+    var h = document.createElement("div");
+    h.style.cssText = "padding:16px 24px 8px;font-size:13px;font-weight:600;font-family:var(--mono);letter-spacing:.08em;text-transform:uppercase;color:" + (g==="cra"?"var(--cra)":"var(--bs)");
+    h.textContent = gruppen[g];
+    container.appendChild(h);
+
+    items.filter(function(it){return it.k===g;}).forEach(function(it,idx){
+      var key = g+"-"+idx;
+      var row = document.createElement("label");
+      row.style.cssText = "display:flex;align-items:center;gap:12px;padding:10px 24px;font-size:14.5px;cursor:pointer;border-bottom:1px solid var(--linie);";
+      if(saved[key]) row.classList.add("done");
+
+      var cb = document.createElement("input");
+      cb.type = "checkbox";
+      cb.checked = !!saved[key];
+      cb.style.cssText = "width:18px;height:18px;accent-color:"+(g==="cra"?"var(--cra)":"var(--bs)");
+      cb.addEventListener("change",function(){
+        saved[key]=this.checked;
+        try{localStorage.setItem("mimir-check",JSON.stringify(saved));}catch(e){}
+        row.classList.toggle("done",this.checked);
+      });
+
+      var label = document.createElement("span");
+      label.textContent = it.t;
+
+      var dauer = document.createElement("span");
+      dauer.style.cssText = "margin-left:auto;font-family:var(--mono);font-size:11px;color:var(--tinte-3);white-space:nowrap;";
+      dauer.textContent = it.d;
+
+      row.appendChild(cb);
+      row.appendChild(label);
+      row.appendChild(dauer);
+      container.appendChild(row);
+    });
+  }
+})();
+</script>
+
+</body>
+</html>
